@@ -37,8 +37,8 @@ export default {
       dialogFormVisible: false,
       //控制上传的文件传输的服务器的地址
       // uploadPath: "http://localhost:8800/api/oss/upload/", //如果这样写的话会出现跨域的问题,相当于没有经过前端直接向后端发起的请求
-      uploadPath: "/dev-api/api/oss/upload", //这样写就不会出现跨域的问题,前端里面已经配置过跨域了; 测试生产环境里面不行,会出问题
-      // uploadPath: "/prod-api/api/oss/upload", //这样写就不会出现跨域的问题,前端里面已经配置过跨域了; 测试生产环境里面不行,会出问题
+      // uploadPath: "/dev-api/api/oss/upload", //这样写就不会出现跨域的问题,前端里面已经配置过跨域了; 测试生产环境里面不行,会出问题
+      uploadPath: "/prod-api/api/oss/upload", //这样写就不会出现跨域的问题,前端里面已经配置过跨域了; 测试生产环境里面不行,会出问题
     };
   },
   methods: {

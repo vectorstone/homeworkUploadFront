@@ -73,12 +73,12 @@
           <el-button type="primary" @click="assignRole" size="small">保存</el-button>
           <el-button @click="dialogRoleVisible = false" size="small">取消</el-button>
         </div>-->
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="registryForm" label-width="120px" class="demo-ruleForm">
           <el-form-item label="username" prop="username">
-            <el-input v-model="ruleForm.username" aria-placeholder="请输入数字字符组成的用户名"></el-input>
+            <el-input v-model="ruleForm.username" placeholder="请输入数字字符组成的用户名"></el-input>
           </el-form-item>
           <el-form-item label="name" prop="name">
-            <el-input v-model="ruleForm.name" aria-placeholder="请输入真实的姓名"></el-input>
+            <el-input v-model="ruleForm.name" placeholder="请输入真实的姓名"></el-input>
           </el-form-item>
           <el-form-item label="Password" prop="password">
             <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
@@ -86,11 +86,21 @@
           <el-form-item label="Confirm" prop="description">
             <el-input type="password" v-model="ruleForm.description" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="组别" prop="phone">
-            <el-input  v-model="ruleForm.phone" autocomplete="off" aria-placeholder="组名,例如: 4"></el-input>
+          <!--<el-form-item label="组别" prop="phone">
+            <el-input  v-model="ruleForm.phone" autocomplete="off" placeholder="组名,例如: 4"></el-input>
+          </el-form-item>-->
+          <el-form-item label="组别" prop="phone" >
+            <el-select v-model="ruleForm.phone" placeholder="请选择组别">
+              <el-option label="No.1" value="1"></el-option>
+              <el-option label="No.2" value="2"></el-option>
+              <el-option label="No.3" value="3"></el-option>
+              <el-option label="No.4" value="4"></el-option>
+              <el-option label="No.5" value="4"></el-option>
+              <el-option label="No.6" value="4"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="头像链接" prop="headUrl">
-            <el-input  v-model="ruleForm.headUrl" autocomplete="off" aria-placeholder="头像的链接地址,不设置也可以,有默认值"></el-input>
+            <el-input  v-model="ruleForm.headUrl" autocomplete="off" placeholder="头像的链接地址,不设置也可以,有默认值"></el-input>
           </el-form-item>
 
           <el-form-item>
@@ -115,9 +125,9 @@ export default {
       if (value === '') {
         callback(new Error('Please input the password'));
       } else {
-        if (this.ruleForm.description !== '') {
+        /* if (this.ruleForm.description !== '') {
           this.$refs.ruleForm.validateField('description');
-        }
+        } */
         callback();
       }
     };
@@ -130,17 +140,46 @@ export default {
         callback();
       }
     };
-
-    const validateUsername = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('请输入至少5个字符的用户名'))
+    //使用正则表达式来判断头像的url里面是否包含中文
+    var validateHeadurl = (rule,value,callback) => {
+      var patrn=/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi;
+      if(patrn.exec(value)){
+        callback(new Error('请输入头像图片的链接'))
       } else {
         callback()
       }
     };
+
+    const validateUsername = (rule, value, callback) => {
+      var patrn=/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi;
+      if (value.length < 5) {
+        callback(new Error('请输入至少5个字符的用户名'))
+      } else if(patrn.exec(value)){
+        callback(new Error('用户名中不可以包含中文'))
+      } else {
+        callback()
+      }
+    };
+
+    const validateName = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error('请输入用户名'))
+      }  else {
+        callback()
+      }
+    };
+
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('请输入至少6个字符的密码'))
+      } else {
+        callback()
+      }
+    };
+    const validateGroup = (rule, value, callback) => {
+      var patrn = /[0-9]*/gi;
+      if (!patrn.exec(value)) {
+        callback(new Error('请输入数字组号'))
       } else {
         callback()
       }
@@ -149,20 +188,20 @@ export default {
       dialogFormVisible: true,
       //-----------------表单校验相关的
       ruleForm: {
-        username: '数字及英文字母组成的昵称',
+        username: '',
         password: '', //使用password替换pass,匹配后端的password字段
         description: '', //使用description替换checkPass,用户表里面并没有这个checkPass的字段
-        name: '请务必填写真实姓名',
-        headUrl: '头像链接地址,可以不设置',
-        phone: '' //使用phone来作为组别
+        name: '',
+        headUrl: '',
+        // phone: 0 //使用phone来作为组别
       },
       rules: {
-        password: [
-          {validator: validatePass, trigger: 'blur'}
-        ],
-        description: [
-          {validator: validatePass2, trigger: 'blur'}
-        ]
+        username: [{required: true,validator: validateUsername,trigger: 'blur'}],
+        name: [{required: true,validator: validateName,trigger: 'blur'}],
+        password: [{required: true,validator: validatePass, trigger: 'blur'}],
+        description: [{required: true,validator: validatePass2, trigger: 'blur'}],
+        headUrl: [{validator: validateHeadurl,trigger: 'blur'}],
+        phone: [{required: true,validator: validateGroup,trigger: 'blur'}]
       },
       //----------------
       dialogRoleVisible: false,
@@ -193,10 +232,25 @@ export default {
       this.ruleForm = {}
     },
     submitForm(){
-      api.addUser(this.ruleForm).then(res => {
-        this.$message.success(res.message || 'succeed')
-        this.dialogRoleVisible = false
-      })
+
+      this.$refs["registryForm"].validate((valid, msg) => {
+        if (valid) {
+          console.log("submit");
+          console.log(this.ruleForm);
+          api.addUser(this.ruleForm).then(res => {
+            this.$message.success(res.message || 'succeed')
+            this.dialogRoleVisible = false
+          })
+        } else {
+          console.log("error submit!!");
+          console.log(msg);
+          for (let key in msg) {
+            alert(msg[key][0].message);
+            return false;
+          }
+        }
+      });
+
     },
     handleregister(){
       this.dialogRoleVisible = true

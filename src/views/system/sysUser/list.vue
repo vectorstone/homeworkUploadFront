@@ -140,7 +140,7 @@
     <el-dialog title="作业列表" :visible.sync="dialogImagesRoleVisible">
       <el-form label-width="80px">
         <el-form-item label="学生姓名">
-          <el-input disabled :value="sysUser.username"></el-input>
+          <el-input disabled :value="sysUser.name"></el-input>
         </el-form-item>
 
         <el-form-item label="作业列表">
