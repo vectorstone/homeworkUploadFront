@@ -73,11 +73,11 @@
 
       <el-table-column label="操作" align="center" fixed="right">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row.id)" title="修改" /><!-- :disabled="$hasBP('bnt.sysUser.update')  === false" -->
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row.id)" title="修改" :disabled="$hasBP('bnt.sysUser.update')  === false"/><!--  -->
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeDataById(scope.row.id)"
-                     title="删除" /><!-- :disabled="$hasBP('bnt.sysUser.remove')  === false" -->
-          <el-button type="warning" icon="el-icon-baseball" size="mini" @click="showAssignRole(scope.row)" title="分配角色" /><!-- :disabled="$hasBP('bnt.sysUser.assignRole')  === false" -->
-          <el-button type="primary" icon="el-icon-reading" size="mini" @click="showImages(scope.row)" title="查看作业" /><!-- :disabled="$hasBP('bnt.sysUser.assignRole')  === false" -->
+                     title="删除" :disabled="$hasBP('bnt.sysUser.remove')  === false"/><!--  -->
+          <el-button type="warning" icon="el-icon-baseball" size="mini" @click="showAssignRole(scope.row)" title="分配角色" :disabled="$hasBP('bnt.sysUser.assignRole')  === false"/><!--  -->
+          <el-button type="primary" icon="el-icon-reading" size="mini" @click="showImages(scope.row)" title="查看作业" /><!--  -->
         </template>
       </el-table-column>
     </el-table>

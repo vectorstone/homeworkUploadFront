@@ -2,6 +2,43 @@ import request from '@/utils/request'
 const api_name = '/admin/dict'
 
 export default {
+  //查询用户的所有的图片的集合
+  queryAllImages(pageNum,pageSize){
+    return request({
+      url: `/admin/system/image/list/${pageNum}/${pageSize}`,
+      method: 'GET'
+    })
+  },
+  //修改用户的图片的名称
+  saveImages(image){
+    return request({
+      url: '/admin/system/sysUser/saveImage',
+      method: 'PUT',
+      data: image
+    })
+  },
+  //查询最近的一次的作业的所有的图片的集合
+    queryLatestImages(){
+      return request({
+        url: '/admin/system/image/latest',
+        method: 'GET'
+      })
+    },
+    //查询对应作业名称下的所有的图片
+    queryImagesByName(name){
+      return request({
+        url: '/admin/system/image',
+        method: 'GET',
+        params: {name}
+      })
+    },
+    //查询所有的作业的集合
+    queryHomeworkName(){
+      return request({
+        url: '/admin/system/image/homework/name',
+        method: 'GET'
+      })
+    },
     //根据name查询该字典对应的子字典
     getByPname(name) {
         return request({

@@ -40,7 +40,9 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    // redirect: '/dashboard',
+    // redirect: '/system/sysUpload',
+    redirect: '/system/sysUser',//默认跳转到用户的列表页面,节省oss的访问的流量
     children: [{
       path: 'dashboard',
       name: 'Dashboard',

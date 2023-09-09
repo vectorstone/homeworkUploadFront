@@ -150,6 +150,7 @@ export default {
       }
     };
 
+    //注册的时候的用户名的校验的规则
     const validateUsername = (rule, value, callback) => {
       var patrn=/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi;
       if (value.length < 5) {
@@ -211,7 +212,10 @@ export default {
         password: '111111'
       },
       loginRules: {
-        username: [{required: true, trigger: 'blur', validator: validateUsername}],
+        //由于注册的时候username和登录的时候的username使用的是同一套的校验的规则,导致之前有的同学的注册的时候有中文的字符
+        //结果修改完校验的规则之后,登录的时候提示不能有中文字符,导致不能登录了
+        // username: [{required: true, trigger: 'blur', validator: validateUsername}],
+        username: [{required: true, trigger: 'blur'}],
         password: [{required: true, trigger: 'blur', validator: validatePassword}]
       },
       loading: false,
