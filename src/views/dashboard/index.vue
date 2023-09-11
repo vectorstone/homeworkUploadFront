@@ -20,7 +20,7 @@
         </el-option>
       </el-select>-->
     </div>
-    <el-carousel :interval="4000" type="card" height="500px">
+    <el-carousel :interval="6000" type="card" height="500px" >
       <el-carousel-item v-for="item,index in homeworkImages" >
         <h3 class="medium">{{index+1}} {{ item.username }}</h3>
         <el-image

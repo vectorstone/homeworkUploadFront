@@ -2,6 +2,14 @@ import request from '@/utils/request'
 const api_name = '/admin/dict'
 
 export default {
+  //查询作业的提交的情况
+  querySubmitStatus(homeworkList){
+    return request({
+      url: "/admin/system//submit/status",
+      method: 'POST',
+      data: homeworkList
+    })
+  },
   //查询用户的所有的图片的集合
   queryAllImages(pageNum,pageSize){
     return request({
